@@ -97,20 +97,21 @@ void OnTick()
 
 // Feed with tick variable data
    SymbolInfoTick(_Symbol, tick);
-//   Print("real volume ", candle[0].real_volume);
-//Print("open ", candle[0].open);
-//Print("close ", candle[0].close);
-//Print("high ", candle[0].high);
-  // Print("tick volume ", candle[0].tick_volume);
-//Print("spread ", candle[0].spread);  
+   Print("real volume ", candle[0].real_volume);
+   Print("open ", candle[0].open);
+   Print("close ", candle[0].close);
+   Print("high ", candle[0].high);
+   Print("tick volume ", candle[0].tick_volume);
+   Print("spread ", candle[0].spread);
    tickVolumeAcc += candle[0].tick_volume;
    realVolumeAcc += candle[0].real_volume;
+   Print("accs ", tickVolumeAcc, "|", realVolumeAcc);
    if(volumeTime != candle[0].time)
      {
-         Print(volumeTime, tickVolumeAcc, realVolumeAcc);
-         volumeTime = candle[0].time;
-         tickVolumeAcc = 0;
-         realVolumeAcc = 0;
+      Alert(volumeTime, "|", realVolumeAcc, "|", tickVolumeAcc);
+      volumeTime = candle[0].time;
+      tickVolumeAcc = 0;
+      realVolumeAcc = 0;
      }
 
 // LOGIC TO ACTIVATE PURCHASE
