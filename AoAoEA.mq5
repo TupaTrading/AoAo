@@ -6,11 +6,11 @@
 //---
 
 enum STRATEGY_IN
-{
+  {
    ONLY_MA,   // Only moving averages
    ONLY_RSI,  // Only RSI
    MA_AND_RSI // moving averages plus RSI
-};
+  };
 
 //---
 // Variables Input
@@ -69,111 +69,117 @@ MqlTick tick;      // Variable for storing ticks
 //| Expert initialization function                                   |
 //+------------------------------------------------------------------+
 int OnInit()
-{
+  {
 
    CopyRates(_Symbol, _Period, 0, 4, candle);
    ArraySetAsSeries(candle, true);
 
    return (INIT_SUCCEEDED);
-}
+  }
 //+------------------------------------------------------------------+
 //| Expert deinitialization function                                 |
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
-{
-}
+  {
+  }
+
+string volumeTime;
 //+------------------------------------------------------------------+
 //| Expert tick function                                             |
 //+------------------------------------------------------------------+
-Date volumeTime;
 void OnTick()
-{
-   //--- Feed candle buffers with data:
+  {
+//--- Feed candle buffers with data:
    CopyRates(_Symbol, _Period, 0, 4, candle);
    ArraySetAsSeries(candle, true);
 
-   // Feed with tick variable data
+// Feed with tick variable data
    SymbolInfoTick(_Symbol, tick);
    Print("real volume ", candle[0].real_volume);
-   //Print("open ", candle[0].open);
-   //Print("close ", candle[0].close);
-   //Print("high ", candle[0].high);
+//Print("open ", candle[0].open);
+//Print("close ", candle[0].close);
+//Print("high ", candle[0].high);
    Print("tick volume ", candle[0].tick_volume);
-   //Print("spread ", candle[0].spread);
-   volumeTime = candle[0].time   
-   Print("time ", volumeTime);
+//Print("spread ", candle[0].spread);  
+   
+   if(volumeTime != candle[0].time)
+     {
+         volumeTime = candle[0].time;
+         Print("volumeTime ", volumeTime);
+     }
 
-   // LOGIC TO ACTIVATE PURCHASE
-   //   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
-   //                      ma_fast_Buffer[2] < ma_slow_Buffer[2] ;
-   //
-   //   bool buy_rsi = rsi_Buffer[0] <= rsi_oversold;
+// LOGIC TO ACTIVATE PURCHASE
+//   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
+//                      ma_fast_Buffer[2] < ma_slow_Buffer[2] ;
+//
+//   bool buy_rsi = rsi_Buffer[0] <= rsi_oversold;
 
-   // LOGIC TO ACTIVATE SALE
-   //   bool sell_ma_cros = ma_slow_Buffer[0] > ma_fast_Buffer[0] &&
-   //                       ma_slow_Buffer[2] < ma_fast_Buffer[2];
-   //
-   //   bool sell_rsi = rsi_Buffer[0] >= rsi_overbought;
-   //---
+// LOGIC TO ACTIVATE SALE
+//   bool sell_ma_cros = ma_slow_Buffer[0] > ma_fast_Buffer[0] &&
+//                       ma_slow_Buffer[2] < ma_fast_Buffer[2];
+//
+//   bool sell_rsi = rsi_Buffer[0] >= rsi_overbought;
+//---
 
    bool Buy = false;  // Can Buy?
    bool Sell = false; // Can Sell?
 
-   //   if(strategy == ONLY_MA)
-   //     {
-   //      Buy = buy_ma_cros;
-   //      Sell  = sell_ma_cros;
-   //
-   //     }
-   //   else
-   //      if(strategy == ONLY_RSI)
-   //        {
-   //         Buy = buy_rsi;
-   //         Sell  = sell_rsi;
-   //        }
-   //      else
-   //        {
-   //         Buy = buy_ma_cros && buy_rsi;
-   //         Sell  = sell_ma_cros && sell_rsi;
-   //        }
+//   if(strategy == ONLY_MA)
+//     {
+//      Buy = buy_ma_cros;
+//      Sell  = sell_ma_cros;
+//
+//     }
+//   else
+//      if(strategy == ONLY_RSI)
+//        {
+//         Buy = buy_rsi;
+//         Sell  = sell_rsi;
+//        }
+//      else
+//        {
+//         Buy = buy_ma_cros && buy_rsi;
+//         Sell  = sell_ma_cros && sell_rsi;
+//        }
 
-   // returns true if we have a new candle
+// returns true if we have a new candle
    bool newBar = isNewBar();
 
-   // Every time there is a new candle enter this 'if'
-   if (newBar)
-   {
+// Every time there is a new candle enter this 'if'
+   if(newBar)
+     {
 
       // Buy Condition:
-      if (Buy && PositionSelect(_Symbol) == false)
-      {
+      if(Buy && PositionSelect(_Symbol) == false)
+        {
          drawVerticalLine("Buy", candle[1].time, clrBlue);
          BuyAtMarket();
-      }
+        }
 
       // Sell Condition:
-      if (Sell && PositionSelect(_Symbol) == false)
-      {
+      if(Sell && PositionSelect(_Symbol) == false)
+        {
          drawVerticalLine("Sell", candle[1].time, clrRed);
          SellAtMarket();
-      }
-   }
+        }
+     }
 
-   if (newBar && TimeToString(TimeCurrent(), TIME_MINUTES) == limit_close_op && PositionSelect(_Symbol) == true)
-   {
+   if(newBar && TimeToString(TimeCurrent(), TIME_MINUTES) == limit_close_op && PositionSelect(_Symbol) == true)
+     {
       Print("-----> End of Operating Time: End Open Positions!");
       drawVerticalLine("Limit_OP", candle[0].time, clrYellow);
 
-      if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-      {
+      if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
+        {
          CloseBuy();
-      }
-      else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
-      {
-         CloseSell();
-      }
-   }
-}
+        }
+      else
+         if(PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
+           {
+            CloseSell();
+           }
+     }
+  }
 //+------------------------------------------------------------------+
 //| FUNCTIONS TO ASSIST IN THE VISUALIZATION OF THE STRATEGY         |
 //+------------------------------------------------------------------+
@@ -182,11 +188,11 @@ void OnTick()
 //|                                                                  |
 //+------------------------------------------------------------------+
 void drawVerticalLine(string name, datetime dt, color cor = clrAliceBlue)
-{
+  {
    ObjectDelete(0, name);
    ObjectCreate(0, name, OBJ_VLINE, 0, dt, 0);
    ObjectSetInteger(0, name, OBJPROP_COLOR, cor);
-}
+  }
 
 //+------------------------------------------------------------------+
 //| FUNCTIONS FOR SENDING ORDERS                                     |
@@ -194,14 +200,14 @@ void drawVerticalLine(string name, datetime dt, color cor = clrAliceBlue)
 
 // BUY TO MARKET
 void BuyAtMarket()
-{
+  {
    MqlTradeRequest request; // request
    MqlTradeResult response; // response
 
    ZeroMemory(request);
    ZeroMemory(response);
 
-   //--- For Buy Order
+//--- For Buy Order
    request.action = TRADE_ACTION_DEAL;                   // Trade operation type
    request.magic = magic_number;                         // Magic number
    request.symbol = _Symbol;                             // Trade symbol
@@ -213,30 +219,30 @@ void BuyAtMarket()
    request.type = ORDER_TYPE_BUY;                        // Order type
    request.type_filling = ORDER_FILLING_FOK;             // Order execution type
 
-   //---
+//---
    OrderSend(request, response);
-   //---
-   if (response.retcode == 10008 || response.retcode == 10009)
-   {
+//---
+   if(response.retcode == 10008 || response.retcode == 10009)
+     {
       Print("Order Buy executed successfully!!");
-   }
+     }
    else
-   {
+     {
       Print("Error sending Order to Buy. Error = ", GetLastError());
       ResetLastError();
-   }
-}
+     }
+  }
 
 // SELL TO MARKET
 void SellAtMarket()
-{
+  {
    MqlTradeRequest request; // request
    MqlTradeResult response; // response
 
    ZeroMemory(request);
    ZeroMemory(response);
 
-   //--- For Sell Order
+//--- For Sell Order
    request.action = TRADE_ACTION_DEAL;                   // Trade operation type
    request.magic = magic_number;                         // Magic number
    request.symbol = _Symbol;                             // Trade symbol
@@ -247,30 +253,30 @@ void SellAtMarket()
    request.deviation = 0;                                // Maximal possible deviation from the requested price
    request.type = ORDER_TYPE_SELL;                       // Order type
    request.type_filling = ORDER_FILLING_FOK;             // Order execution type
-                                                         //---
+//---
    OrderSend(request, response);
-   //---
-   if (response.retcode == 10008 || response.retcode == 10009)
-   {
+//---
+   if(response.retcode == 10008 || response.retcode == 10009)
+     {
       Print("Order to Sell executed successfully!");
-   }
+     }
    else
-   {
+     {
       Print("Error sending Order to Sell. Error =", GetLastError());
       ResetLastError();
-   }
-}
+     }
+  }
 
 //---
 void CloseBuy()
-{
+  {
    MqlTradeRequest request; // request
    MqlTradeResult response; // response
 
    ZeroMemory(request);
    ZeroMemory(response);
 
-   //--- For Sell Order
+//--- For Sell Order
    request.action = TRADE_ACTION_DEAL;
    request.magic = magic_number;
    request.symbol = _Symbol;
@@ -279,32 +285,32 @@ void CloseBuy()
    request.type = ORDER_TYPE_SELL;
    request.type_filling = ORDER_FILLING_RETURN;
 
-   //---
+//---
    OrderSend(request, response);
-   //---
-   if (response.retcode == 10008 || response.retcode == 10009)
-   {
+//---
+   if(response.retcode == 10008 || response.retcode == 10009)
+     {
       Print("Order to Sell executed successfully!");
-   }
+     }
    else
-   {
+     {
       Print("Error sending Order to Sell. Error =", GetLastError());
       ResetLastError();
-   }
-}
+     }
+  }
 
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
 void CloseSell()
-{
+  {
    MqlTradeRequest request; // request
    MqlTradeResult response; // response
 
    ZeroMemory(request);
    ZeroMemory(response);
 
-   //--- For Buy Order
+//--- For Buy Order
    request.action = TRADE_ACTION_DEAL;
    request.magic = magic_number;
    request.symbol = _Symbol;
@@ -313,47 +319,47 @@ void CloseSell()
    request.type = ORDER_TYPE_BUY;
    request.type_filling = ORDER_FILLING_RETURN;
 
-   //---
+//---
    OrderSend(request, response);
 
-   //---
-   if (response.retcode == 10008 || response.retcode == 10009)
-   {
+//---
+   if(response.retcode == 10008 || response.retcode == 10009)
+     {
       Print("Order Buy executed successfully!!");
-   }
+     }
    else
-   {
+     {
       Print("Error sending Order to Buy. Error = ", GetLastError());
       ResetLastError();
-   }
-}
+     }
+  }
 //+------------------------------------------------------------------+
 //| USEFUL FUNCTIONS                                                 |
 //+------------------------------------------------------------------+
 //--- for bar change
 bool isNewBar()
-{
-   //--- memorize the time of opening of the last bar in the static variable
+  {
+//--- memorize the time of opening of the last bar in the static variable
    static datetime last_time = 0;
-   //--- current time
+//--- current time
    datetime lastbar_time = (datetime)SeriesInfoInteger(Symbol(), Period(), SERIES_LASTBAR_DATE);
 
-   //--- if it is the first call of the function
-   if (last_time == 0)
-   {
+//--- if it is the first call of the function
+   if(last_time == 0)
+     {
       //--- set the time and exit
       last_time = lastbar_time;
       return (false);
-   }
+     }
 
-   //--- if the time differs
-   if (last_time != lastbar_time)
-   {
+//--- if the time differs
+   if(last_time != lastbar_time)
+     {
       //--- memorize the time and return true
       last_time = lastbar_time;
       return (true);
-   }
-   //--- if we passed to this line, then the bar is not new; return false
+     }
+//--- if we passed to this line, then the bar is not new; return false
    return (false);
-}
+  }
 //+------------------------------------------------------------------+
