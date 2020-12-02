@@ -97,18 +97,20 @@ void OnTick()
 
 // Feed with tick variable data
    SymbolInfoTick(_Symbol, tick);
-   Print("real volume ", candle[0].real_volume);
-   Print("open ", candle[0].open);
-   Print("close ", candle[0].close);
-   Print("high ", candle[0].high);
-   Print("tick volume ", candle[0].tick_volume);
-   Print("spread ", candle[0].spread);
+
+//do my business:
+   Print("real volume\t ", candle[0].real_volume);
+   Print("open\t ", candle[0].open);
+   Print("close\t ", candle[0].close);
+   Print("high\t ", candle[0].high);
+   Print("tick volume\t ", candle[0].tick_volume);
+   Print("spread\t ", candle[0].spread);
    tickVolumeAcc += candle[0].tick_volume;
    realVolumeAcc += candle[0].real_volume;
-   Print("accs ", tickVolumeAcc, "|", realVolumeAcc);
+   Print("accs ", tickVolumeAcc, "\t ", realVolumeAcc);
    if(volumeTime != candle[0].time)
      {
-      Alert(volumeTime, "|", realVolumeAcc, "|", tickVolumeAcc);
+      Alert(volumeTime, "\t ", realVolumeAcc, "\t ", tickVolumeAcc);
       volumeTime = candle[0].time;
       tickVolumeAcc = 0;
       realVolumeAcc = 0;
