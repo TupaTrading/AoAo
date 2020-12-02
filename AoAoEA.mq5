@@ -85,6 +85,7 @@ void OnDeinit(const int reason)
 //+------------------------------------------------------------------+
 //| Expert tick function                                             |
 //+------------------------------------------------------------------+
+Date volumeTime;
 void OnTick()
 {
    //--- Feed candle buffers with data:
@@ -94,12 +95,13 @@ void OnTick()
    // Feed with tick variable data
    SymbolInfoTick(_Symbol, tick);
    Print("real volume ", candle[0].real_volume);
-   Print("open ", candle[0].open);
-   Print("close ", candle[0].close);
-   Print("high ", candle[0].high);
+   //Print("open ", candle[0].open);
+   //Print("close ", candle[0].close);
+   //Print("high ", candle[0].high);
    Print("tick volume ", candle[0].tick_volume);
-   Print("spread ", candle[0].spread);
-   Print("time ", candle[0].time);
+   //Print("spread ", candle[0].spread);
+   volumeTime = candle[0].time   
+   Print("time ", volumeTime);
 
    // LOGIC TO ACTIVATE PURCHASE
    //   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
