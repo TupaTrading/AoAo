@@ -99,22 +99,24 @@ void OnTick()
    SymbolInfoTick(_Symbol, tick);
 
 //do my business:
-   Print("real volume\t ", candle[0].real_volume);
-   Print("open\t ", candle[0].open);
-   Print("close\t ", candle[0].close);
-   Print("high\t ", candle[0].high);
-   Print("tick volume\t ", candle[0].tick_volume);
-   Print("spread\t ", candle[0].spread);
+   Print("real volume:\t", candle[0].real_volume);
+   Print("open:\t ", candle[0].open);
+   Print("close:\t ", candle[0].close);
+   Print("high:\t ", candle[0].high);
+   Print("tick volume:\t ", candle[0].tick_volume);
+   Print("spread:\t ", candle[0].spread);
    tickVolumeAcc += candle[0].tick_volume;
    realVolumeAcc += candle[0].real_volume;
-   Print("accs ", tickVolumeAcc, "\t ", realVolumeAcc);
+   Print("accs ", tickVolumeAcc, "\t; ", realVolumeAcc);
    if(volumeTime != candle[0].time)
      {
-      Alert(volumeTime, "\t ", realVolumeAcc, "\t ", tickVolumeAcc);
+      Alert(volumeTime, ";\t ", realVolumeAcc, ";\t ", tickVolumeAcc);
       volumeTime = candle[0].time;
       tickVolumeAcc = 0;
       realVolumeAcc = 0;
      }
+
+     //1085458 big volume no wdo candle azul escura
 
 // LOGIC TO ACTIVATE PURCHASE
 //   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
