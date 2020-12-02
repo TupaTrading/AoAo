@@ -115,8 +115,15 @@ void OnTick()
       tickVolumeAcc = 0;
       realVolumeAcc = 0;
      }
-
-     //1085458 big volume no wdo candle azul escura
+//wdo
+     // azul escura 2020.12.02 15:37:00;	16160513;	1085458
+     // larajna 2020.12.02 15:38:00;	2065226;	179860
+     // azul navy 2020.12.02 15:39:00;	4538133;	268151
+     // vermelho vivo 2020.12.02 15:41:00;	3058163;	165520
+     // vermelho vivo 2020.12.02 15:43:00;	3009501;	118766
+//win 
+      //2020.12.02 15:47:00;	21100280;	1377380 laranja 
+      //2020.12.02 15:48:00;	24180004;	1547741 laranja
 
 // LOGIC TO ACTIVATE PURCHASE
 //   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
