@@ -92,7 +92,7 @@ int tickVolumeAcc;
 void OnTick()
   {
 //--- Feed candle buffers with data:
-   CopyRates(_Symbol, _Period, 0, 5, candle);
+   CopyRates(_Symbol, _Period, 0, 10, candle);
    ArraySetAsSeries(candle, true);
 
 // Feed with tick variable data
@@ -108,7 +108,7 @@ void OnTick()
 
    tickVolumeAcc += candle[0].tick_volume;
    realVolumeAcc += candle[0].real_volume;
-   Print("accs ", tickVolumeAcc, "\t; ", realVolumeAcc);
+   Alert("accs:\t ", tickVolumeAcc, ";\t ", realVolumeAcc);
 
    if(volumeTime != candle[0].time)
      {
