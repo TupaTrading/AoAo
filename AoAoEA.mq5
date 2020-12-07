@@ -92,22 +92,24 @@ int tickVolumeAcc;
 void OnTick()
   {
 //--- Feed candle buffers with data:
-   CopyRates(_Symbol, _Period, 0, 4, candle);
+   CopyRates(_Symbol, _Period, 0, 10, candle);
    ArraySetAsSeries(candle, true);
 
 // Feed with tick variable data
    SymbolInfoTick(_Symbol, tick);
 
 //do my business:
-   Print("real volume:\t", candle[0].real_volume);
-   Print("open:\t ", candle[0].open);
-   Print("close:\t ", candle[0].close);
-   Print("high:\t ", candle[0].high);
-   Print("tick volume:\t ", candle[0].tick_volume);
-   Print("spread:\t ", candle[0].spread);
+   Print("real volume:\t", candle[0].real_volume,";\t", candle[1].real_volume,";\t", candle[2].real_volume,";\t", candle[3].real_volume,";\t", candle[4].real_volume);
+   Print("open:\t ", candle[0].open,";\t", candle[1].open,";\t", candle[2].open,";\t", candle[3].open,";\t", candle[4].open);
+   Print("close:\t ", candle[0].close,";\t", candle[1].close,";\t", candle[2].close,";\t", candle[3].close,";\t", candle[4].close);
+   Print("high:\t ", candle[0].high,";\t", candle[1].high,";\t", candle[2].high,";\t", candle[3].high,";\t", candle[4].high);
+   Print("tick volume:\t ", candle[0].tick_volume,";\t", candle[1].tick_volume,";\t", candle[2].tick_volume,";\t", candle[3].tick_volume,";\t", candle[4].tick_volume);
+   Print("spread:\t ", candle[0].spread,";\t", candle[1].spread,";\t", candle[2].spread,";\t", candle[3].spread,";\t", candle[4].spread);
+
    tickVolumeAcc += candle[0].tick_volume;
    realVolumeAcc += candle[0].real_volume;
-   Print("accs ", tickVolumeAcc, "\t; ", realVolumeAcc);
+   Alert("accs:\t ", tickVolumeAcc, ";\t ", realVolumeAcc);
+
    if(volumeTime != candle[0].time)
      {
       Alert(volumeTime, ";\t ", realVolumeAcc, ";\t ", tickVolumeAcc);
