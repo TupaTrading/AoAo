@@ -156,6 +156,32 @@ void OnTick()
    //
    //   bool sell_rsi = rsi_Buffer[0] >= rsi_overbought;
    //---
+     }
+//wdo
+     // azul escura 2020.12.02 15:37:00;	16160513;	1085458
+     // larajna 2020.12.02 15:38:00;	2065226;	179860
+     // azul navy 2020.12.02 15:39:00;	4538133;	268151
+     // vermelho vivo 2020.12.02 15:41:00;	3058163;	165520
+     // vermelho vivo 2020.12.02 15:43:00;	3009501;	118766
+     // aqua 2020.12.02 15:58:00;	2653928;	180792
+     // azul jeans 2020.12.02 16:15:00;	2619222;	141831
+//win 
+      //2020.12.02 15:47:00;	21100280;	1377380 laranja 
+      //2020.12.02 15:48:00;	24180004;	1547741 laranja
+      //2020.12.02 16:16:00;	43127337;	2622451 aqua
+
+// LOGIC TO ACTIVATE PURCHASE
+//   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
+//                      ma_fast_Buffer[2] < ma_slow_Buffer[2] ;
+//
+//   bool buy_rsi = rsi_Buffer[0] <= rsi_oversold;
+
+// LOGIC TO ACTIVATE SALE
+//   bool sell_ma_cros = ma_slow_Buffer[0] > ma_fast_Buffer[0] &&
+//                       ma_slow_Buffer[2] < ma_fast_Buffer[2];
+//
+//   bool sell_rsi = rsi_Buffer[0] >= rsi_overbought;
+//---
 
    bool Buy = false;  // Can Buy?
    bool Sell = false; // Can Sell?
