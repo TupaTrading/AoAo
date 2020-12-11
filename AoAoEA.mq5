@@ -47,6 +47,8 @@ input string limit_close_op = "17:40"; // Time Limit Close Position
 int magic_number = 123456; // Magic Number
 int IndicadorHandle1;
 double IndicadorHandle1Buffer[];
+double IndicadorHandle1Buffer1[];
+double IndicadorHandle1Buffer2[];
 
 //big player candles
 int inpLookbackPeriod = 20;
@@ -108,10 +110,21 @@ void OnTick()
    SymbolInfoTick(_Symbol, tick);
 
    CopyBuffer(IndicadorHandle1, 0, 0, 10, IndicadorHandle1Buffer);
+   CopyBuffer(IndicadorHandle1, 1, 0, 10, IndicadorHandle1Buffer1);
+   CopyBuffer(IndicadorHandle1, 2, 0, 10, IndicadorHandle1Buffer2);
+
    ArraySetAsSeries(IndicadorHandle1Buffer, true);
 
-   ArrayPrint(candle);
+   ArraySetAsSeries(IndicadorHandle1Buffer1, true);
+
+   ArraySetAsSeries(IndicadorHandle1Buffer2, true);
+
+   // Print("Candle");
+   // ArrayPrint(candle);
+   Print("Big Player Candles:");
    ArrayPrint(IndicadorHandle1Buffer);
+   ArrayPrint(IndicadorHandle1Buffer1);
+   ArrayPrint(IndicadorHandle1Buffer2);
 }
 //+------------------------------------------------------------------+
 //| FUNCTIONS TO ASSIST IN THE VISUALIZATION OF THE STRATEGY         |
