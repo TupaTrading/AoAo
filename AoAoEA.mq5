@@ -1,6 +1,6 @@
 //+------------------------------------------------------------------+
 //+------------------------------------------------------------------+
-#property copyright "paulista.tk"
+#property copyright "Tupa Trading"
 #property link "http://www.paulista.tk/tupatrading/"
 #property version "0.0.1"
 //---
