@@ -107,31 +107,17 @@ void OnTick()
    // Feed with tick variable data
    SymbolInfoTick(_Symbol, tick);
 
-   //do my business:
-   Print("real volume:\t", candle[0].real_volume, ";\t", candle[1].real_volume, ";\t", candle[2].real_volume, ";\t", candle[3].real_volume, ";\t", candle[4].real_volume);
-   Print("open:\t ", candle[0].open, ";\t", candle[1].open, ";\t", candle[2].open, ";\t", candle[3].open, ";\t", candle[4].open);
-   Print("close:\t ", candle[0].close, ";\t", candle[1].close, ";\t", candle[2].close, ";\t", candle[3].close, ";\t", candle[4].close);
-   Print("high:\t ", candle[0].high, ";\t", candle[1].high, ";\t", candle[2].high, ";\t", candle[3].high, ";\t", candle[4].high);
-   Print("tick volume:\t ", candle[0].tick_volume, ";\t", candle[1].tick_volume, ";\t", candle[2].tick_volume, ";\t", candle[3].tick_volume, ";\t", candle[4].tick_volume);
-   Print("spread:\t ", candle[0].spread, ";\t", candle[1].spread, ";\t", candle[2].spread, ";\t", candle[3].spread, ";\t", candle[4].spread);
-
-   tickVolumeAcc += candle[0].tick_volume;
-   realVolumeAcc += candle[0].real_volume;
-   Alert("accs:\t ", tickVolumeAcc, ";\t ", realVolumeAcc);
-
-   if (volumeTime != candle[0].time)
-   {
-      Alert(volumeTime, ";\t ", realVolumeAcc, ";\t ", tickVolumeAcc);
-      volumeTime = candle[0].time;
-      tickVolumeAcc = 0;
-      realVolumeAcc = 0;
-   }
-
-   CopyBuffer(IndicadorHandle1, 0, 0, 4, IndicadorHandle1Buffer);
+   CopyBuffer(IndicadorHandle1, 0, 0, 10, IndicadorHandle1Buffer);
    ArraySetAsSeries(IndicadorHandle1Buffer, true);
-   for (short i = 0; i < 4; i++)
+   for (short i = 0; i < 10; i++)
    {
-      Print("big player candle buffer:\t ", i, IndicadorHandle1Buffer[i]);
+      Print("real volume:\t", candle[i].real_volume);
+      Print("open:\t ", candle[i].open);
+      Print("close:\t ", candle[i].close);
+      Print("high:\t ", candle[i].high);
+      Print("tick volume:\t ", candle[i].tick_volume);
+      Print("spread:\t ", candle[i].spread);
+      Print("big player candle buffer:\t ", IndicadorHandle1Buffer[i]);
    }
 }
 //+------------------------------------------------------------------+
