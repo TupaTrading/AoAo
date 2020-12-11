@@ -77,7 +77,7 @@ int OnInit()
       Alert("Error trying to create Handles for indicator - error: ", GetLastError(), "!");
       return (-1);
    }
-   
+
    ChartIndicatorAdd(0, 0, IndicadorHandle1);
 
    CopyRates(_Symbol, _Period, 0, 4, candle);
@@ -131,7 +131,7 @@ void OnTick()
    ArraySetAsSeries(IndicadorHandle1Buffer, true);
    for (short i = 0; i < 4; i++)
    {
-      Print("volume:\t ", IndicadorHandle1Buffer[i]);
+      Print("big player candle buffer:\t ", i, IndicadorHandle1Buffer[i]);
    }
 }
 //+------------------------------------------------------------------+
