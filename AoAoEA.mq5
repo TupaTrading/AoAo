@@ -108,17 +108,10 @@ void OnTick()
    SymbolInfoTick(_Symbol, tick);
 
    CopyBuffer(IndicadorHandle1, 0, 0, 10, IndicadorHandle1Buffer);
-   // ArraySetAsSeries(IndicadorHandle1Buffer, true);
-   for (short i = 0; i < 10; i++)
-   {
-      Print("real volume:\t", candle[i].real_volume);
-      Print("open:\t ", candle[i].open);
-      Print("close:\t ", candle[i].close);
-      Print("high:\t ", candle[i].high);
-      Print("tick volume:\t ", candle[i].tick_volume);
-      Print("spread:\t ", candle[i].spread);
-      Print("big player candle buffer:\t ", IndicadorHandle1Buffer[i]);
-   }
+   ArraySetAsSeries(IndicadorHandle1Buffer, true);
+
+   ArrayPrint(candle);
+   ArrayPrint(IndicadorHandle1Buffer);
 }
 //+------------------------------------------------------------------+
 //| FUNCTIONS TO ASSIST IN THE VISUALIZATION OF THE STRATEGY         |
