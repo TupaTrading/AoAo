@@ -41,27 +41,12 @@ sinput string s4;                      //---------------------------
 input string limit_close_op = "17:40"; // Time Limit Close Position
 
 //+------------------------------------------------------------------+
-//|  Variables for indicators                                        |
-//+------------------------------------------------------------------+
-//--- Moving Averages
-// FAST - shorter period
-int ma_fast_Handle;      // Handle Fast Moving Average
-double ma_fast_Buffer[]; // Buffer Fast Moving Average
-
-// SLOW - longer period
-int ma_slow_Handle;      // Handle Slow Moving Average
-double ma_slow_Buffer[]; // Buffer Slow Moving Average
-
-//--- RSI
-int rsi_Handle;      // Handle for RSI
-double rsi_Buffer[]; // Buffer for RSI
-
-//+------------------------------------------------------------------+
 //| Variables for functions                                          |
 //+------------------------------------------------------------------+
 
 int magic_number = 123456; // Magic Number
 int IndicadorHandle1;
+double IndicadorHandle1Buffer[];
 
 //big player candles
 int inpLookbackPeriod = 20;
@@ -76,6 +61,7 @@ int inpColorVHDown = 255;
 int inpColorHDown = 120;
 int inpColorMDown = 3289667;
 int inpColorLDown = -1;
+
 MqlRates candle[]; // Variable for storing candles
 MqlTick tick;      // Variable for storing ticks
 
@@ -85,6 +71,14 @@ MqlTick tick;      // Variable for storing ticks
 int OnInit()
 {
    IndicadorHandle1 = iCustom(_Symbol, _Period, "Big Player Candles");
+
+   if (IndicadorHandle1 < 0)
+   {
+      Alert("Error trying to create Handles for indicator - error: ", GetLastError(), "!");
+      return (-1);
+   }
+   
+   ChartIndicatorAdd(0, 0, IndicadorHandle1);
 
    CopyRates(_Symbol, _Period, 0, 4, candle);
    ArraySetAsSeries(candle, true);
@@ -133,112 +127,11 @@ void OnTick()
       realVolumeAcc = 0;
    }
 
-   //wdo
-   // azul escura 2020.12.02 15:37:00;  16160513;   1085458
-   // larajna 2020.12.02 15:38:00;   2065226; 179860
-   // azul navy 2020.12.02 15:39:00; 4538133; 268151
-   // vermelho vivo 2020.12.02 15:41:00;   3058163; 165520
-   // vermelho vivo 2020.12.02 15:43:00;   3009501; 118766
-   //aqua 2020.12.02 15:58:00; 2653928; 180792
-   //win
-   //2020.12.02 15:47:00;  21100280;   1377380 laranja
-   //2020.12.02 15:48:00;  24180004;   1547741 laranja
-
-   // LOGIC TO ACTIVATE PURCHASE
-   //   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
-   //                      ma_fast_Buffer[2] < ma_slow_Buffer[2] ;
-   //
-   //   bool buy_rsi = rsi_Buffer[0] <= rsi_oversold;
-
-   // LOGIC TO ACTIVATE SALE
-   //   bool sell_ma_cros = ma_slow_Buffer[0] > ma_fast_Buffer[0] &&
-   //                       ma_slow_Buffer[2] < ma_fast_Buffer[2];
-   //
-   //   bool sell_rsi = rsi_Buffer[0] >= rsi_overbought;
-   //---
-     }
-//wdo
-     // azul escura 2020.12.02 15:37:00;	16160513;	1085458
-     // larajna 2020.12.02 15:38:00;	2065226;	179860
-     // azul navy 2020.12.02 15:39:00;	4538133;	268151
-     // vermelho vivo 2020.12.02 15:41:00;	3058163;	165520
-     // vermelho vivo 2020.12.02 15:43:00;	3009501;	118766
-     // aqua 2020.12.02 15:58:00;	2653928;	180792
-     // azul jeans 2020.12.02 16:15:00;	2619222;	141831
-//win 
-      //2020.12.02 15:47:00;	21100280;	1377380 laranja 
-      //2020.12.02 15:48:00;	24180004;	1547741 laranja
-      //2020.12.02 16:16:00;	43127337;	2622451 aqua
-
-// LOGIC TO ACTIVATE PURCHASE
-//   bool buy_ma_cros = ma_fast_Buffer[0] > ma_slow_Buffer[0] &&
-//                      ma_fast_Buffer[2] < ma_slow_Buffer[2] ;
-//
-//   bool buy_rsi = rsi_Buffer[0] <= rsi_oversold;
-
-// LOGIC TO ACTIVATE SALE
-//   bool sell_ma_cros = ma_slow_Buffer[0] > ma_fast_Buffer[0] &&
-//                       ma_slow_Buffer[2] < ma_fast_Buffer[2];
-//
-//   bool sell_rsi = rsi_Buffer[0] >= rsi_overbought;
-//---
-
-   bool Buy = false;  // Can Buy?
-   bool Sell = false; // Can Sell?
-
-   //   if(strategy == ONLY_MA)
-   //     {
-   //      Buy = buy_ma_cros;
-   //      Sell  = sell_ma_cros;
-   //
-   //     }
-   //   else
-   //      if(strategy == ONLY_RSI)
-   //        {
-   //         Buy = buy_rsi;
-   //         Sell  = sell_rsi;
-   //        }
-   //      else
-   //        {
-   //         Buy = buy_ma_cros && buy_rsi;
-   //         Sell  = sell_ma_cros && sell_rsi;
-   //        }
-
-   // returns true if we have a new candle
-   bool newBar = isNewBar();
-
-   // Every time there is a new candle enter this 'if'
-   if (newBar)
+   CopyBuffer(IndicadorHandle1, 0, 0, 4, IndicadorHandle1Buffer);
+   ArraySetAsSeries(IndicadorHandle1Buffer, true);
+   for (short i = 0; i < 4; i++)
    {
-
-      // Buy Condition:
-      if (Buy && PositionSelect(_Symbol) == false)
-      {
-         drawVerticalLine("Buy", candle[1].time, clrBlue);
-         BuyAtMarket();
-      }
-
-      // Sell Condition:
-      if (Sell && PositionSelect(_Symbol) == false)
-      {
-         drawVerticalLine("Sell", candle[1].time, clrRed);
-         SellAtMarket();
-      }
-   }
-
-   if (newBar && TimeToString(TimeCurrent(), TIME_MINUTES) == limit_close_op && PositionSelect(_Symbol) == true)
-   {
-      Print("-----> End of Operating Time: End Open Positions!");
-      drawVerticalLine("Limit_OP", candle[0].time, clrYellow);
-
-      if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_BUY)
-      {
-         CloseBuy();
-      }
-      else if (PositionGetInteger(POSITION_TYPE) == POSITION_TYPE_SELL)
-      {
-         CloseSell();
-      }
+      Print(IndicadorHandle1Buffer[i]);
    }
 }
 //+------------------------------------------------------------------+
