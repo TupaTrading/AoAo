@@ -108,7 +108,7 @@ void OnTick()
    SymbolInfoTick(_Symbol, tick);
 
    CopyBuffer(IndicadorHandle1, 0, 0, 10, IndicadorHandle1Buffer);
-   ArraySetAsSeries(IndicadorHandle1Buffer, true);
+   // ArraySetAsSeries(IndicadorHandle1Buffer, true);
    for (short i = 0; i < 10; i++)
    {
       Print("real volume:\t", candle[i].real_volume);
