@@ -131,7 +131,7 @@ void OnTick()
    ArraySetAsSeries(IndicadorHandle1Buffer, true);
    for (short i = 0; i < 4; i++)
    {
-      Print(IndicadorHandle1Buffer[i]);
+      Print("volume:\t ", IndicadorHandle1Buffer[i]);
    }
 }
 //+------------------------------------------------------------------+
